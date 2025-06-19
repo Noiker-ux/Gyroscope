@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-import DeviceOrientationControls from "three-device-orientation";
+import { DeviceOrientationControls } from "three/examples/jsm/controls/DeviceOrientationControls.js";
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
 const sizes = { width: window.innerWidth, height: window.innerHeight };
