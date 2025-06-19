@@ -12,6 +12,7 @@
     "vite-plugin-restart": "^0.4.2"
   },
   "dependencies": {
-    "three": "^0.174.0"
+    "three": "^0.174.0",
+    "threejs-gyroscope-controls": "^0.5.0"
   }
 }

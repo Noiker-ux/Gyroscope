@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls, RGBELoader } from "three/examples/jsm/Addons.js";
-
+import { GyroscopeControls } from "threejs-gyroscope-controls";
+import { requestPermission } from "threejs-gyroscope-controls";
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
 const sizes = { width: window.innerWidth, height: window.innerHeight };
@@ -11,7 +12,7 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.set(0, 0, 0);
 scene.add(camera);
 // Controls
-const controls = new OrbitControls(camera, canvas);
+const controls = new GyroscopeControls(camera, canvas);
 controls.target.x = 10;
 controls.enableDamping = true;
 // Loaders
@@ -53,3 +54,6 @@ gyroscope.addEventListener("reading", (e) => {
   console.log(`Angular velocity along the Z-axis ${gyroscope.z}`);
 });
 gyroscope.start();
+window.addEventListener("click", () => {
+  requestPermission().catch(() => console.error("Permission denied"));
+});
