@@ -1,7 +1,5 @@
 import * as THREE from "three";
-import { requestPermission } from "threejs-gyroscope-controls";
-import { GyroscopeControls } from "threejs-gyroscope-controls";
-import { RGBELoader } from "three/examples/jsm/Addons.js";
+import { OrbitControls, RGBELoader } from "three/examples/jsm/Addons.js";
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
@@ -16,7 +14,7 @@ scene.add(camera);
 window.addEventListener("click", () => {
   requestPermission();
 });
-const orbitControls = new GyroscopeControls(camera, canvas);
+const orbitControls = new OrbitControls(camera, canvas);
 orbitControls.target.x = 3.5;
 
 // Loaders
@@ -51,3 +49,9 @@ window.addEventListener("resize", () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 // Глобальные переменные для хранения ориентации устройства
+let gyroscope = new Gyroscope({ frequency: 60 });
+
+gyroscope.addEventListener("reading", (e) => {
+  alert(`Angular velocity along the X-axis ${gyroscope.x}`);
+});
+gyroscope.start();
