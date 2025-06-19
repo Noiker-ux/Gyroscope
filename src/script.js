@@ -33,19 +33,10 @@ let obj = {
   z: 0,
 };
 
-function motion(event) {
-  obj.x = event.accelerationIncludingGravity.x;
-  obj.y = event.accelerationIncludingGravity.y;
-  obj.z = event.accelerationIncludingGravity.z;
-}
-
 // Tick
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
-  if (window.DeviceMotionEvent) {
-    window.addEventListener("devicemotion", motion, false);
-  }
-  alert(obj.x);
+
   camera.rotation.x = obj.x;
   camera.rotation.y = obj.y;
   camera.rotation.z = obj.z;
@@ -61,4 +52,15 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
+window.addEventListener("deviceorientation", function (event) {
+  // Получаем углы наклона
+  const alpha = event.alpha || 0;
+  // Угол поворота вокруг оси Z (азимут)
+  const beta = event.beta || 0;
+  // Наклон вперед/назад (ось X)
+  const gamma = event.gamma || 0;
+  // Крен вправо-влево (ось Y)
+  document.getElementById("output").innerHTML =
+    `Alpha: ${alpha.toFixed(2)}°<br>` + `Beta: ${beta.toFixed(2)}°<br>` + `Gamma: ${gamma.toFixed(2)}°`;
 });
