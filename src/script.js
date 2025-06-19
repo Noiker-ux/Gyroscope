@@ -30,31 +30,20 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 // Clock
 const clock = new THREE.Clock();
 // Gyro
-const gyro = new Gyroscope({ frequency: 60 });
-let obj = {
-  xRotation: null,
-  yRotation: null,
-  zRotation: null,
+let sensor = new Gyroscope();
+let x, y, z, report;
+sensor.start();
+sensor.onreading = () => {
+  camera.quaternion.x = sensor.x;
 };
-gyro.onreading = (e) => {
-  obj.xRotation = gyro.x; // Угловое ускорение по оси X
-  obj.yRotation = gyro.y; // Угловое ускорение по оси Y
-  obj.zRotation = gyro.z; // Угловое ускорение по оси Z
-  console.log(`X: ${xRotation}, Y: ${yRotation}, Z: ${zRotation}`);
-};
-gyro.start();
 // Tick
-setTimeout(() => {
-  const tick = () => {
-    const elapsedTime = clock.getElapsedTime();
-    alert(obj.xRotation);
-    orbitControls.update();
-    renderer.render(scene, camera);
-    window.requestAnimationFrame(tick);
-  };
-  tick();
-}, 3000);
-
+const tick = () => {
+  const elapsedTime = clock.getElapsedTime();
+  orbitControls.update();
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(tick);
+};
+tick();
 // Resize
 window.addEventListener("resize", () => {
   sizes.width = window.innerWidth;
@@ -64,8 +53,3 @@ window.addEventListener("resize", () => {
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
-if ("Gyroscope" in window && "Sensor" in window) {
-  console.log("API поддерживается");
-} else {
-  console.error("Ваш браузер не поддерживает этот API.");
-}
