@@ -27,10 +27,28 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 // Clock
 const clock = new THREE.Clock();
 // Gyrod
+let obj = {
+  x: 0,
+  y: 0,
+  z: 0,
+};
+if (window.DeviceMotionEvent) {
+  window.addEventListener("devicemotion", motion, false);
+} else {
+  console.log("DeviceMotionEvent is not supported");
+}
+function motion(event) {
+  obj.x = event.accelerationIncludingGravity.x;
+  obj.y = event.accelerationIncludingGravity.y;
+  obj.z = event.accelerationIncludingGravity.z;
+}
 
 // Tick
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
+  camera.rotation.x = obj.x;
+  camera.rotation.y = obj.y;
+  camera.rotation.z = obj.z;
   renderer.render(scene, camera);
   window.requestAnimationFrame(tick);
 };
