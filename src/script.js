@@ -32,11 +32,7 @@ let obj = {
   y: 0,
   z: 0,
 };
-if (window.DeviceMotionEvent) {
-  window.addEventListener("devicemotion", motion, false);
-} else {
-  console.log("DeviceMotionEvent is not supported");
-}
+
 function motion(event) {
   obj.x = event.accelerationIncludingGravity.x;
   obj.y = event.accelerationIncludingGravity.y;
@@ -46,6 +42,9 @@ function motion(event) {
 // Tick
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
+  if (window.DeviceMotionEvent) {
+    window.addEventListener("devicemotion", motion, false);
+  }
   camera.rotation.x = obj.x;
   camera.rotation.y = obj.y;
   camera.rotation.z = obj.z;
