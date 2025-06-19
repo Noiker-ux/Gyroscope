@@ -14,9 +14,6 @@ camera.position.set(0, 0, 0);
 scene.add(camera);
 // DeviceOrientationControls
 
-window.addEventListener("click", () => {
-  requestPermission().catch(() => console.error("Permission denied"));
-});
 const orbitControls = new GyroscopeControls(camera, renderer.domElement);
 
 // Loaders
