@@ -12,9 +12,6 @@ camera.position.set(0, 0, 0);
 scene.add(camera);
 // Глобальные переменные для хранения ориентации устройства
 
-const orbitControls = new OrbitControls(camera, canvas);
-orbitControls.target.x = 3.5;
-
 // Loaders
 const rgbeLoader = new RGBELoader();
 // Textures
@@ -31,15 +28,17 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 const clock = new THREE.Clock();
 // Gyro
 let sensor = new Gyroscope();
-let x, y, z, report;
+let x = 0;
+let y = 0;
+let z = 0;
 sensor.start();
 sensor.onreading = () => {
-  camera.quaternion.x = sensor.x;
+  x = sensor.x;
 };
 // Tick
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
-  orbitControls.update();
+  camera.rotation.x = x;
   renderer.render(scene, camera);
   window.requestAnimationFrame(tick);
 };
