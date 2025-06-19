@@ -31,23 +31,18 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 // Clock
 const clock = new THREE.Clock();
 // Gyrod
-let obj = {
-  x: 0,
-  y: 0,
-  z: 0,
-};
 
 // Tick
-const tick = () => {
-  const elapsedTime = clock.getElapsedTime();
-
-  camera.rotation.x = obj.x;
-  camera.rotation.y = obj.y;
-  camera.rotation.z = obj.z;
-  renderer.render(scene, camera);
-  window.requestAnimationFrame(tick);
-};
-tick();
+window.addEventListener("deviceorientation", (ev) => {
+  const tick = () => {
+    const elapsedTime = clock.getElapsedTime();
+    camera.rotation.y = ev.alpha;
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(tick);
+    console.log(ev);
+  };
+  tick();
+});
 // Resize
 window.addEventListener("resize", () => {
   sizes.width = window.innerWidth;
@@ -56,15 +51,4 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-});
-window.addEventListener("deviceorientation", function (event) {
-  // Получаем углы наклона
-  const alpha = event.alpha || 0;
-  // Угол поворота вокруг оси Z (азимут)
-  const beta = event.beta || 0;
-  // Наклон вперед/назад (ось X)
-  const gamma = event.gamma || 0;
-  // Крен вправо-влево (ось Y)
-  document.getElementById("output").innerHTML =
-    `Alpha: ${alpha.toFixed(2)}°<br>` + `Beta: ${beta.toFixed(2)}°<br>` + `Gamma: ${gamma.toFixed(2)}°`;
 });
