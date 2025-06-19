@@ -26,7 +26,7 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 // Clock
 const clock = new THREE.Clock();
-// Gyro
+// Gyrod
 let sensor = new Gyroscope();
 let x = 0;
 let y = 0;
