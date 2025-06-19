@@ -17,6 +17,7 @@ window.addEventListener("click", () => {
   requestPermission();
 });
 const orbitControls = new GyroscopeControls(camera, canvas);
+orbitControls.target.x = 3.5;
 
 // Loaders
 const rgbeLoader = new RGBELoader();
