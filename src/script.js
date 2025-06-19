@@ -23,7 +23,7 @@ function updateCamera() {
   camera.quaternion.copy(q);
 }
 
-if (typeof window.orientation !== undefined || typeof window.ondeviceorientation !== undefined) {
+if (typeof window.ondeviceorientation !== undefined) {
   window.addEventListener(
     "deviceorientation",
     function (event) {
@@ -54,7 +54,7 @@ const clock = new THREE.Clock();
 // Tick
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
-  console.log(gyroscope);
+  updateCamera();
   renderer.render(scene, camera);
   window.requestAnimationFrame(tick);
 };
