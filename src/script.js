@@ -13,8 +13,10 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.set(0, 0, 0);
 scene.add(camera);
 // DeviceOrientationControlsasdasdasd
-
-const orbitControls = new GyroscopeControls(camera, renderer.domElement);
+window.addEventListener("click", () => {
+  requestPermission().catch(() => console.error("Permission denied"));
+});
+const orbitControls = new GyroscopeControls(camera, canvas);
 
 // Loaders
 const rgbeLoader = new RGBELoader();
