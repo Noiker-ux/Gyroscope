@@ -1,5 +1,6 @@
 import * as THREE from "three";
-import { Gyroscope } from "three/examples/jsm/Addons.js";
+import { requestPermission } from "threejs-gyroscope-controls";
+import { GyroscopeControls } from "threejs-gyroscope-controls";
 import { RGBELoader } from "three/examples/jsm/Addons.js";
 
 // Canvas
@@ -12,30 +13,11 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.set(0, 0, 0);
 scene.add(camera);
 // DeviceOrientationControls
-const gyroscope = new Gyroscope();
-let alpha = 0,
-  beta = 0,
-  gamma = 0;
-function updateCamera() {
-  const q = new THREE.Quaternion().setFromEuler(
-    new THREE.Euler((beta * Math.PI) / 180, (alpha * Math.PI) / 180, (gamma * Math.PI) / 180)
-  );
-  camera.quaternion.copy(q);
-}
 
-if (typeof window.ondeviceorientation !== undefined) {
-  window.addEventListener(
-    "deviceorientation",
-    function (event) {
-      if (!event.alpha && !event.beta && !event.gamma) return;
-      alpha = event.alpha ? event.alpha : 0;
-      beta = event.beta ? event.beta : 0;
-      gamma = event.gamma ? event.gamma : 0;
-      updateCamera();
-    },
-    false
-  );
-}
+window.addEventListener("click", () => {
+  requestPermission().catch(() => console.error("Permission denied"));
+});
+const orbitControls = new GyroscopeControls(camera, renderer.domElement);
 
 // Loaders
 const rgbeLoader = new RGBELoader();
@@ -54,7 +36,7 @@ const clock = new THREE.Clock();
 // Tick
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
-  updateCamera();
+  orbitControls.update();
   renderer.render(scene, camera);
   window.requestAnimationFrame(tick);
 };
