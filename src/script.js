@@ -45,6 +45,7 @@ const tick = () => {
   if (window.DeviceMotionEvent) {
     window.addEventListener("devicemotion", motion, false);
   }
+  alert(obj.x);
   camera.rotation.x = obj.x;
   camera.rotation.y = obj.y;
   camera.rotation.z = obj.z;
