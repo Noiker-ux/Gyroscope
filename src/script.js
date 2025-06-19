@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls, RGBELoader } from "three/examples/jsm/Addons.js";
-import { requestPermission } from "threejs-gyroscope-controls";
-import { GyroscopeControls } from "threejs-gyroscope-controls";
+import { DeviceOrientationControls } from "../lib/DeviceOrientationControls";
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
 const sizes = { width: window.innerWidth, height: window.innerHeight };
@@ -12,10 +11,7 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.set(0, 0, 0);
 scene.add(camera);
 // Глобальные переменные для хранения ориентации устройства
-window.addEventListener("click", () => {
-  requestPermission();
-});
-const orbitControls = new GyroscopeControls(camera, canvas);
+const orbitControls = new DeviceOrientationControls(camera);
 // Loaders
 const rgbeLoader = new RGBELoader();
 // Textures
@@ -33,16 +29,13 @@ const clock = new THREE.Clock();
 // Gyrod
 
 // Tick
-window.addEventListener("deviceorientation", (ev) => {
-  const tick = () => {
-    const elapsedTime = clock.getElapsedTime();
-    camera.rotation.y = ev.alpha;
-    renderer.render(scene, camera);
-    window.requestAnimationFrame(tick);
-    console.log(ev);
-  };
-  tick();
-});
+const tick = () => {
+  const elapsedTime = clock.getElapsedTime();
+
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(tick);
+};
+tick();
 // Resize
 window.addEventListener("resize", () => {
   sizes.width = window.innerWidth;
