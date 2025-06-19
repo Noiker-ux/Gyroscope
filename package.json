@@ -12,7 +12,7 @@
     "vite-plugin-restart": "^0.4.2"
   },
   "dependencies": {
-    "three": "^0.174.0",
+    "three": "^0.177.0",
     "three-device-orientation": "^1.0.3",
     "threejs-gyroscope-controls": "^0.5.0"
   }

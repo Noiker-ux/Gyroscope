@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { DeviceOrientationControls } from "three/addons/controls/DeviceOrientationControls.js";
+import { Gyroscope } from "three/examples/jsm/Addons.js";
 import { RGBELoader } from "three/examples/jsm/Addons.js";
 
 // Canvas
@@ -12,7 +12,31 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.set(0, 0, 0);
 scene.add(camera);
 // DeviceOrientationControls
-const controls = new DeviceOrientationControls(camera);
+const gyroscope = new Gyroscope();
+let alpha = 0,
+  beta = 0,
+  gamma = 0;
+function updateCamera() {
+  const q = new THREE.Quaternion().setFromEuler(
+    new THREE.Euler((beta * Math.PI) / 180, (alpha * Math.PI) / 180, (gamma * Math.PI) / 180)
+  );
+  camera.quaternion.copy(q);
+}
+
+if (typeof window.orientation !== undefined || typeof window.ondeviceorientation !== undefined) {
+  window.addEventListener(
+    "deviceorientation",
+    function (event) {
+      if (!event.alpha && !event.beta && !event.gamma) return;
+      alpha = event.alpha ? event.alpha : 0;
+      beta = event.beta ? event.beta : 0;
+      gamma = event.gamma ? event.gamma : 0;
+      updateCamera();
+    },
+    false
+  );
+}
+
 // Loaders
 const rgbeLoader = new RGBELoader();
 // Textures
@@ -30,8 +54,7 @@ const clock = new THREE.Clock();
 // Tick
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
-  // controls.update();
-  controls.update();
+  console.log(gyroscope);
   renderer.render(scene, camera);
   window.requestAnimationFrame(tick);
 };
@@ -45,11 +68,4 @@ window.addEventListener("resize", () => {
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
-
-let gyroscope = new Gyroscope({ frequency: 60 });
-gyroscope.addEventListener("reading", (e) => {
-  console.log(`Angular velocity along the X-axis ${gyroscope.x}`);
-  console.log(`Angular velocity along the Y-axis ${gyroscope.y}`);
-  console.log(`Angular velocity along the Z-axis ${gyroscope.z}`);
-});
-gyroscope.start();
+// Глобальные переменные для хранения ориентации устройства
