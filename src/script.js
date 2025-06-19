@@ -12,7 +12,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
 camera.position.set(0, 0, 0);
 scene.add(camera);
-// DeviceOrientationControls
+// DeviceOrientationControlsasdasdasd
 
 const orbitControls = new GyroscopeControls(camera, renderer.domElement);
 
