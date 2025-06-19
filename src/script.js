@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import DeviceOrientationControls from "three-device-orientation";
-import { OrbitControls, RGBELoader } from "three/examples/jsm/Addons.js";
+import { DeviceOrientationControls } from "three/addons/controls/DeviceOrientationControls.js";
+import { RGBELoader } from "three/examples/jsm/Addons.js";
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
@@ -11,12 +11,8 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
 camera.position.set(0, 0, 0);
 scene.add(camera);
-// Controls
-// const controls = new OrbitControls(camera, canvas);
-// controls.target.x = 10;
-// controls.enableDamping = true;
 // DeviceOrientationControls
-const deviceOrientation = new DeviceOrientationControls(camera);
+const controls = new DeviceOrientationControls(camera);
 // Loaders
 const rgbeLoader = new RGBELoader();
 // Textures
@@ -35,7 +31,7 @@ const clock = new THREE.Clock();
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
   // controls.update();
-  deviceOrientation.update();
+  controls.update();
   renderer.render(scene, camera);
   window.requestAnimationFrame(tick);
 };
