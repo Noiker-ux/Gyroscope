@@ -10,10 +10,8 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
 camera.position.set(0, 0, 0);
 scene.add(camera);
-// DeviceOrientationControlsasdasdasd
-window.addEventListener("click", () => {
-  requestPermission();
-});
+// Глобальные переменные для хранения ориентации устройства
+
 const orbitControls = new OrbitControls(camera, canvas);
 orbitControls.target.x = 3.5;
 
@@ -31,14 +29,32 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 // Clock
 const clock = new THREE.Clock();
-// Tick
-const tick = () => {
-  const elapsedTime = clock.getElapsedTime();
-  orbitControls.update();
-  renderer.render(scene, camera);
-  window.requestAnimationFrame(tick);
+// Gyro
+const gyro = new Gyroscope({ frequency: 60 });
+let obj = {
+  xRotation: null,
+  yRotation: null,
+  zRotation: null,
 };
-tick();
+gyro.onreading = (e) => {
+  obj.xRotation = gyro.x; // Угловое ускорение по оси X
+  obj.yRotation = gyro.y; // Угловое ускорение по оси Y
+  obj.zRotation = gyro.z; // Угловое ускорение по оси Z
+  console.log(`X: ${xRotation}, Y: ${yRotation}, Z: ${zRotation}`);
+};
+gyro.start();
+// Tick
+setTimeout(() => {
+  const tick = () => {
+    const elapsedTime = clock.getElapsedTime();
+    alert(obj.xRotation);
+    orbitControls.update();
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(tick);
+  };
+  tick();
+}, 3000);
+
 // Resize
 window.addEventListener("resize", () => {
   sizes.width = window.innerWidth;
@@ -48,10 +64,8 @@ window.addEventListener("resize", () => {
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
-// Глобальные переменные для хранения ориентации устройства
-let gyroscope = new Gyroscope({ frequency: 60 });
-
-gyroscope.addEventListener("reading", (e) => {
-  alert(`Angular velocity along the X-axis ${gyroscope.x}`);
-});
-gyroscope.start();
+if ("Gyroscope" in window && "Sensor" in window) {
+  console.log("API поддерживается");
+} else {
+  console.error("Ваш браузер не поддерживает этот API.");
+}
