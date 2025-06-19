@@ -27,18 +27,10 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 // Clock
 const clock = new THREE.Clock();
 // Gyrod
-let sensor = new Gyroscope();
-let x = 0;
-let y = 0;
-let z = 0;
-sensor.start();
-sensor.onreading = () => {
-  x = sensor.x;
-};
+
 // Tick
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
-  camera.rotation.x = x;
   renderer.render(scene, camera);
   window.requestAnimationFrame(tick);
 };
