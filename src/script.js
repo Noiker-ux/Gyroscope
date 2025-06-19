@@ -14,7 +14,7 @@ camera.position.set(0, 0, 0);
 scene.add(camera);
 // DeviceOrientationControlsasdasdasd
 window.addEventListener("click", () => {
-  requestPermission().catch(() => console.error("Permission denied"));
+  requestPermission();
 });
 const orbitControls = new GyroscopeControls(camera, canvas);
 
