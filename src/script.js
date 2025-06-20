@@ -1,6 +1,5 @@
 import * as THREE from "three";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-import { DeviceOrientationControls } from "three/examples/jsm/controls/DeviceOrientationControls.js";
+import { ArcballControls, OrbitControls, RGBELoader } from "three/examples/jsm/Addons.js";
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
 const sizes = { width: window.innerWidth, height: window.innerHeight };
@@ -11,7 +10,8 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.set(0, 0, 0);
 scene.add(camera);
 // Глобальные переменные для хранения ориентации устройства
-const controls = new DeviceOrientationControls(camera, true);
+
+const orbitControls = new ArcballControls(camera, canvas, scene);
 // Loaders
 const rgbeLoader = new RGBELoader();
 // Textures
@@ -31,7 +31,7 @@ const clock = new THREE.Clock();
 // Tick
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
-  controls.update();
+  orbitControls.update();
   renderer.render(scene, camera);
   window.requestAnimationFrame(tick);
 };
@@ -44,10 +44,4 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-});
-
-document.getElementById("output").addEventListener("click", (evt) => {
-  controls.enabled = true;
-  evt.preventDefault();
-  controls.enabled = true;
 });
