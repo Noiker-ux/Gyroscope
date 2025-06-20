@@ -45,3 +45,9 @@ window.addEventListener("resize", () => {
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
+
+document.getElementById("output").addEventListener("click", (evt) => {
+  controls.enabled = true;
+  evt.preventDefault();
+  controls.enabled = true;
+});
